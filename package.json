@@ -15,5 +15,12 @@
   "bugs": {
     "url": "https://github.com/ryanbreen/advent2017/issues"
   },
-  "homepage": "https://github.com/ryanbreen/advent2017#readme"
+  "homepage": "https://github.com/ryanbreen/advent2017#readme",
+  "dependencies": {
+    "lodash": "^4.17.11",
+    "minimalist": "^1.0.0"
+  },
+  "devDependencies": {
+    "standard": "^12.0.1"
+  }
 }
