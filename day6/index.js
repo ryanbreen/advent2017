@@ -36,18 +36,36 @@ const part1 = input => {
 }
 
 const part2 = input => {
-  const jumps = _.map(fs.readFileSync(input).toString().split("\n"), i => { return parseInt(i) });
+  const memory = _.map(fs.readFileSync(input).toString().split(" "), i => { return parseInt(i) });
 
-  let pc = 0
+  const seen_configs = {}
+
   let counter = 0
-  while (pc >= 0 && pc < jumps.length) {
-    const jumpDistance = jumps[pc]
-    jumps[pc] = jumpDistance >= 3 ? jumpDistance - 1 : jumpDistance + 1
-    pc += jumpDistance
+  seen_configs[_.toString(memory)] = counter
+  while (true) {
     counter += 1
-  }
 
-  return counter
+    // Shuffle memory
+    let rebalance = _.reverse(_.sortBy(memory))[0]
+    let index = _.indexOf(memory, rebalance)
+
+    memory[index] = 0
+
+    while (rebalance > 0) {
+      index += 1
+      if (index === memory.length) {
+        index = 0
+      }
+
+      memory[index] += 1
+      rebalance -= 1
+    }
+
+    // Exit if we've already seen this config
+    const current = _.toString(memory)
+    if (seen_configs[current]) return counter - seen_configs[current]
+    seen_configs[_.toString(memory)] = counter
+  }
 }
 
 const input = './day6/input'
