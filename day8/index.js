@@ -1,8 +1,11 @@
 const _ = require('lodash')
 const fs = require('fs');
 
-const part1 = input => {
+const run_computer = input => {
+
   const instructions = fs.readFileSync(input).toString().split("\n");
+
+  let highestEver = 0
 
   const registers = {}
 
@@ -47,14 +50,25 @@ const part1 = input => {
           register.value -= parseInt(instruction[2])
           break
       }
+
+      if (register.value > highestEver) {
+        highestEver = register.value
+      }
     }
   })
 
-  return _.reverse(_.sortBy(registers, o => { return o.value } ))[0].value
+  return {
+    highestEver: highestEver,
+    highestNow: _.reverse(_.sortBy(registers, o => { return o.value } ))[0].value
+  }
+}
+
+const part1 = input => {
+  return run_computer(input).highestNow
 }
 
 const part2 = input => {
-
+  return run_computer(input).highestEver
 }
 
 const input = './day8/input'
