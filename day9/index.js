@@ -1,7 +1,7 @@
 const _ = require('lodash')
 const fs = require('fs');
 
-const process = input => {
+const part1 = input => {
 
   const lines = fs.readFileSync(input).toString().split("\n");
 
@@ -62,11 +62,48 @@ const process = input => {
   )
 }
 
-const part1 = input => {
-  return process(input)
-}
-
 const part2 = input => {
+  const lines = fs.readFileSync(input).toString().split("\n");
+
+  return _.reduce(
+    _.map(lines, line => {
+      const lineChars = _.split(line, '')
+      let currentlyNegated = false
+      const instructions = _.filter(lineChars, char => {
+        if (currentlyNegated) {
+          currentlyNegated = false
+          return false
+        }
+
+        if (char === '!') {
+          currentlyNegated = true
+          return false
+        }
+
+        return true
+      })
+
+      let garbageCount = 0
+      let inGarbage = false
+      _.map(instructions, char => {
+        if (inGarbage) {
+          if (char === '>') {
+            inGarbage = false
+          } else {
+            garbageCount += 1
+          }
+        }
+
+        if (char === '<') {
+          inGarbage = true
+        }
+      })
+
+      return garbageCount
+    })
+    , (sum, n) => { return sum + n },
+    0
+  )
 }
 
 const input = './day9/input'
